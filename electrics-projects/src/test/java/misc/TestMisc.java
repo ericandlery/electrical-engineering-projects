@@ -28,10 +28,16 @@ public class TestMisc {
 			}
 			System.out.println();
 		}
-		Map<String,Integer> map=this.getFourWayNums(15,x, y);
-		System.out.println(map);
-		
-		this.findWrongNums(map, x, y);
+		Map<String,Integer> map;
+				
+		for(int i=1;i<=x*y;i++) {
+			map=this.getFourWayNums(i, x, y);
+			System.out.println(map);
+//			boolean b=this.isWrongNums(map, x, y);
+//			if(b==false) {
+//				System.out.println(i);
+//			}
+		}
 	}
 	
 	public Map<String,Integer> getFourWayNums(int n,int x,int y){
@@ -40,19 +46,33 @@ public class TestMisc {
 		//get 15
 		
 		//up
-		int up=n-x;
+		Integer up=n-x;
+		if(up<1) {
+			up=null;
+		}
 //		System.out.println(up);
 		
 		//down
-		int down=n+x;
+		Integer down=n+x;
+		if(down>x*y) {
+			down=null;
+		}
 //		System.out.println(down);
 		
 		//left
-		int left=n-1;
+		Integer left=n-1;
+		if(left%x==0) {
+			left=null;
+		}
 //		System.out.println(left);
 		
 		//right
-		int right=n+1;
+		Integer right;
+		if(n%x==0) {
+			right=null;
+		}else {
+			right=n+1;
+		}
 //		System.out.println(right);
 		
 		
@@ -63,13 +83,18 @@ public class TestMisc {
 		return map;
 	}
 	
-	public List<Integer> findWrongNums(Map<String,Integer> map,int x,int y){
+	public Boolean isWrongNums(Map<String,Integer> map,int x,int y){
 		int total=x*y;
 		Set<String> s=map.keySet();
-//		String[] ss=(String[])s.toArray();
-		System.out.println("kk");
-		
-		return null;
+		String[] st=new String[] {};
+		String[] ss=s.toArray(st);
+		for(String str:ss) {
+			Integer num=map.get(str);
+			if(num!=null && (num<1 || num>total)) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 }
