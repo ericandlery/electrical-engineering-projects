@@ -14,9 +14,23 @@ public class PreRCServlet extends HttpServlet{
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
-		System.out.println("kimi");
-		System.out.println(req.getParameter("height"));
-		System.out.println(req.getParameter("width"));
+		/*Height and Width*/
+		int height=0;
+		int width=0;
+		try {
+			height=Integer.parseInt(req.getParameter("height"));
+			width=Integer.parseInt(req.getParameter("height"));
+		}catch(NumberFormatException e) {
+			/*Record these messages with Logging API if available.*/
+			System.out.println(this.getClass().getName()+": NumberFormatException");
+//			throw new NumberFormatException();
+		}
+		
+		/*test*/
+		req.setAttribute("height",13);
+		req.setAttribute("width",19);
+//		req.setAttribute("height",height);
+//		req.setAttribute("width",width);
 		
 		req.getRequestDispatcher("/resistor_circuit/rc_main.jsp").forward(req, resp);
 		
