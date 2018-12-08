@@ -1,0 +1,11 @@
+@charset "UTF-8";
+html,body{margin: 0;padding: 0;}
+header{background-color: lime;margin: 0;top: 0;width: 100%;text-align: center;float: left;}
+	
+section{background: cyan;height: 80vh;width: 100%;float: left;}
+nav{background-color: yellow;height: 80vh;width: 20%;float: left;}
+nav h1{text-align: center;}
+
+article{background-color: lightpink;height: 100%;width: 80%;float: left;}
+
+footer{background-color: black;color: white;float: left;height: 20%;width: 100%;text-align: center;}
