@@ -9,7 +9,22 @@
 <style type="text/css">
 </style>
 <link href="/electrics-projects/frame/css/frame.css" type="text/css" rel="stylesheet">
-<script type="text/javascript" src="/electrics-projects/frame/javascript/frame.js"></script>
+<script type="text/javascript" src="/electrics-projects/frame/javascript/frame.js">
+</script>
+<script type="text/javascript">
+	window.onload=function(){
+		
+	}
+
+	function test(height,width){
+// 		alert(height+' $$$ '+width);
+		goToRCMain(height,width);
+	}
+	
+	function goToRCMain(height,width){
+		location.href='/electrics-projects/rcCircuit?height='+height+'&width='+width;
+	}
+</script>
 </head>
 <body>
     <header>
