@@ -12,9 +12,9 @@
 <script type="text/javascript" src="/electrics-projects/frame/javascript/frame.js">
 </script>
 <script type="text/javascript">
-	window.onload=function(){
+// 	window.onload=function(){
 		
-	}
+// 	}
 
 	function test(height,width){
 // 		alert(height+' $$$ '+width);

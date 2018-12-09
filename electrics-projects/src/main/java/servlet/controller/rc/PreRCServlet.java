@@ -19,16 +19,18 @@ public class PreRCServlet extends HttpServlet{
 		int width=0;
 		try {
 			height=Integer.parseInt(req.getParameter("height"));
-			width=Integer.parseInt(req.getParameter("height"));
+			width=Integer.parseInt(req.getParameter("width"));
 		}catch(NumberFormatException e) {
 			/*Record these messages with Logging API if available.*/
-			System.out.println(this.getClass().getName()+": NumberFormatException");
+			System.out.println(this.getClass().getName()+": NumberFormatException, check if it's debug mode.");
 //			throw new NumberFormatException();
 		}
 		
 		/*test*/
 		req.setAttribute("height",13);
 		req.setAttribute("width",19);
+		
+		/*prod*/
 //		req.setAttribute("height",height);
 //		req.setAttribute("width",width);
 		
