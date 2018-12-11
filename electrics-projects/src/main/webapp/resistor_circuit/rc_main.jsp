@@ -35,13 +35,17 @@
 	function getDroppable(e){
 		e.preventDefault();
 		var iconId;
-		alert(e.target);
+		var srcIconId;
 		
-		/*
-		TODO span and img tag problem
-		*/
+		if('IMG'.toUpperCase()===e.target.tagName.toUpperCase()){
+			iconId=e.target.parentElement.id;
+		}else{
+			iconId=e.target.id;
+		}
 		
-		e.target.innerHTML='<img src="/electrics-projects/resistor_circuit/images/Voltage_Source.png" height="50" width="50">';
+		document.getElementById(iconId).innerHTML='<img src="/electrics-projects/resistor_circuit/images/Voltage_Source.png" height="50" width="50">';
+// 		e.target.innerHTML='<img src="/electrics-projects/resistor_circuit/images/Voltage_Source.png" height="50" width="50">';
+		srcIconId=e.dataTransfer.getData('iconId');
 	}
 	
 	function changeIcon(){
