@@ -13,9 +13,10 @@
 </script>
 <script type="text/javascript">
 // 	window.onload=function(){
-		
+// 		alert('onload2');
 // 	}
 
+	/*Test window.opener*/
 	function test(height,width){
 // 		alert(height+' $$$ '+width);
 		goToRCMain(height,width);

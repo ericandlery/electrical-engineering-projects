@@ -12,7 +12,7 @@
 	.icons{border: 5px solid black;border-radius: 5px;display: inline-block;margin: 5px;}
 </style>
 <script type="text/javascript">
-	window.onload=function(){
+	window.onload=function(){		
 		/*Get icon list to set the icon panel*/
 		var xhr=new XMLHttpRequest();
 		xhr.open('POST','iconAjax.do',true);
@@ -24,12 +24,15 @@
 				if(type.indexOf('application/json')===0){
 					/*All icon urls*/
 					var data=JSON.parse(xhr.responseText);
-					console.log(data);
-					console.log(data[1]);
-					console.log('${pageContext.request.contextPath}');
+					if(data.length!=0){
+						initIconPanel(data);
+					}else{
+						alert('Icons not loaded properly.');
+					}
 				}
 			}
 		}
+		
 	}
 
 	/*Icon dragging event*/
@@ -38,7 +41,7 @@
 		
 		/*Only the span's id is needed. Could be improved......*/
 		iconId=dragDropFilter('IMG',e,iconId);
-// 		alert(iconId);
+// 		console.log(iconId);
 		e.dataTransfer.setData('iconId',iconId);
 	}
 	
@@ -47,18 +50,23 @@
 		e.preventDefault();
 	}
 	
-	/*After getting a droppable icon, it chnages image to that droppable.*/
+	/*After getting a droppable icon, it changes image to that droppable.*/
 	function getDroppable(e){
 		e.preventDefault();
+// 		console.log('getDrop'+e.dataTransfer.getData('iconId'));
 		var iconId;
-		var srcIconId;
+		var srcIconId=e.dataTransfer.getData('iconId');
+		var srcImgUrl;
 		
 		/*Only the span's id is needed. Could be improved......*/
 		iconId=dragDropFilter('IMG',e,iconId);
 		
-		document.getElementById(iconId).innerHTML='<img src="${pageContext.request.contextPath}/resistor_circuit/images/Voltage_Source.png" height="50" width="50">';
+		console.log(srcIconId);
+		srcImgUrl=document.getElementById(srcIconId).getElementsByTagName('IMG')[0].src;
+// 		console.log(srcImgUrl);
+		
+		document.getElementById(iconId).innerHTML='<img src="'+srcImgUrl+'" height="50" width="50">';
 // 		e.target.innerHTML='<img src="/electrics-projects/resistor_circuit/images/Voltage_Source.png" height="50" width="50">';
-		srcIconId=e.dataTransfer.getData('iconId');
 	}
 	
 	function changeIcon(){
@@ -66,6 +74,7 @@
 	}
 	
 	/*Use this to get the oustside ID. Could be improved......*/
+	/*parameters:(In TagName,In Event,Out IconId)*/
 	function dragDropFilter(str,e,iconId){
 		if(str.toUpperCase()===e.target.tagName.toUpperCase()){
 			iconId=e.target.parentElement.id;
@@ -73,6 +82,38 @@
 			iconId=e.target.id;
 		}
 		return iconId;
+	}
+	
+	/*Initialize the icon panel*/
+	function initIconPanel(data){
+		var length=data.length;
+		var frag=document.createDocumentFragment();
+		var panel=document.getElementById('icons');
+		var span=document.createElement('span');
+		var img=document.createElement('img');
+		
+		span.className='icons';
+		span.draggable=true;
+		span.setAttribute('ondragstart','dragIcons(event)');
+		
+		img.className='iconImg';
+		img.height=50;
+		img.width=50;
+		
+		for(var i=0;i<length;i++){
+			span.id=data[i].replace('.png','Pic');
+			span.title=data[i];
+			
+			img.alt=data[i].replace('.png','Pic');
+			img.src="${pageContext.request.contextPath}/resistor_circuit/images/"+data[i];
+						
+			span.appendChild(img);
+			/*don't forget to clone the node in before*/
+			frag.appendChild(span.cloneNode(true));
+		}
+				
+		panel.appendChild(frag);
+
 	}
 </script>
 </head>
@@ -96,9 +137,10 @@
 			</div><!-- End of Grid -->
 		</div><!-- End of Grid Title-->
 		<div id="icons"><!-- RC Icons -->
-			<span id="dcVoltageSource" class="icons" title="DC Voltage Source" draggable="true" ondragstart="dragIcons(event)"><!-- DC Voltage Source -->
-				<img class="iconImg" alt="DC Voltage Source" src="${pageContext.request.contextPath}/resistor_circuit/images/Voltage_Source.png" height="50" width="50">
-			</span>
+			<!-- This division is the Icon Panel which contains all the icons the server holds. -->
+<!-- 			<span id="dcVoltageSource" class="icons" title="DC Voltage Source" draggable="true" ondragstart="dragIcons(event)">DC Voltage Source -->
+<%-- 				<img class="iconImg" alt="DC Voltage Source" src="${pageContext.request.contextPath}/resistor_circuit/images/Voltage_Source.png" height="50" width="50"> --%>
+<!-- 			</span> -->
 		</div>
 	</div><!-- End of Title -->
 <%@include file="/frame/basic_frame_footer.jsp"%>
