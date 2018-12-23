@@ -27,8 +27,8 @@ public class PreRCServlet extends HttpServlet{
 		}
 		
 		/*test*/
-		req.setAttribute("height",13);
-		req.setAttribute("width",19);
+		req.setAttribute("height",4);
+		req.setAttribute("width",7);
 		
 		/*prod*/
 //		req.setAttribute("height",height);

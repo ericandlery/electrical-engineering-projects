@@ -3,8 +3,9 @@
 <head>
 <style type="text/css">
 	#div{height: 100%;}
-	div h1{text-align: center;overflow: auto;}
+	div h1{text-align: center;overflow :auto;}
 	div#outerGrid{background-color: aqua;overflow: auto;margin: auto;width: 95%;height: 55vh;}
+	#submit{position: relative;right: -100px;z-index: 1;}
 	div#grid{white-space: nowrap;}
 	div#grid span{background-color: white;width: 50px;height: 50px;margin-left: 5px;margin-top: 2px;display: inline-block;border: 5px solid black;border-radius: 5px;}
 	div#outerGrid h5{text-align: center;}
@@ -65,7 +66,8 @@
 		srcImgUrl=document.getElementById(srcIconId).getElementsByTagName('IMG')[0].src;
 // 		console.log(srcImgUrl);
 		
-		document.getElementById(iconId).innerHTML='<img src="'+srcImgUrl+'" height="50" width="50">';
+// 		document.getElementById(iconId).innerHTML='<img class="gridImg" src="'+srcImgUrl+'" height="50" width="50">';
+		document.getElementById(iconId).firstElementChild.src=srcImgUrl;
 // 		e.target.innerHTML='<img src="/electrics-projects/resistor_circuit/images/Voltage_Source.png" height="50" width="50">';
 	}
 	
@@ -100,6 +102,7 @@
 		img.height=50;
 		img.width=50;
 		
+		/*wrap it up*/
 		for(var i=0;i<length;i++){
 			span.id=data[i].replace('.png','Pic');
 			span.title=data[i];
@@ -115,34 +118,52 @@
 		panel.appendChild(frag);
 
 	}
+	
+	/*Clear all icons in the grid.*/
+	function clearGrids(){
+		var grids=document.getElementsByClassName('gridImg');
+		for(var i=0;i<grids.length;i++){
+			grids[i].src='${pageContext.request.contextPath}/resistor_circuit/images/0_empty.png';
+			console.log(555);
+		}
+	}
 </script>
 </head>
 <body>
 <%@include file="/frame/basic_home_main.jsp"%>
-	<div id="div"><!-- Title -->
-		<h1>Resistor Circuit</h1>
-		<div id="outerGrid"><!-- Grid Tile-->
-			<h5>Place Your RC Circuit Here</h5>
-			<div id="grid"><!-- Grid --><!-- Place your grid below. -->
-				<c:if test="${height>0 && width>0}">
-					<c:set var="x" value="1"/>
-					<c:forEach begin="1" end="${height}" varStatus="loop"><!-- Height -->
-						<c:forEach begin="1" end="${width}" varStatus="loop"><!-- Width -->
-							<span id="span(${x})" title="span(${x})" ondragover="allowDrop(event)" ondrop="getDroppable(event)"><img src="${pageContext.request.contextPath}/resistor_circuit/images/empty.png" width="50" height="50"></span><!-- Each span represents a area where an icon can be dragged into. -->
-							<c:set var="x" value="${x+1}"/><!-- Counter -->
+		<div id="div"><!-- Title -->
+			<h1>Resistor Circuit</h1>
+			<div id="outerGrid"><!-- Grid Tile-->
+				<h5>
+					Place Your RC Circuit Below
+					<span id="submit">
+						<button>Submit</button>
+						<button onclick="clearGrids()">Clear</button>
+					</span>
+				</h5>
+				<div id="grid"><!-- Grid --><!-- Place your grid below. -->
+					<c:if test="${height>0 && width>0}">
+						<c:set var="x" value="1"/>
+						<c:forEach begin="1" end="${height}" varStatus="loop"><!-- Height -->
+							<c:forEach begin="1" end="${width}" varStatus="loop"><!-- Width -->
+								<!-- Each span represents a area where an icon can be dragged into. -->
+								<span id="span(${x})" title="span(${x})" ondragover="allowDrop(event)" ondrop="getDroppable(event)">
+									<img class="gridImg" src="${pageContext.request.contextPath}/resistor_circuit/images/0_empty.png" width="50" height="50">
+								</span>
+								<c:set var="x" value="${x+1}"/><!-- Counter -->
+							</c:forEach>
+							<br>
 						</c:forEach>
-						<br>
-					</c:forEach>
-				</c:if>
-			</div><!-- End of Grid -->
-		</div><!-- End of Grid Title-->
-		<div id="icons"><!-- RC Icons -->
-			<!-- This division is the Icon Panel which contains all the icons the server holds. -->
-<!-- 			<span id="dcVoltageSource" class="icons" title="DC Voltage Source" draggable="true" ondragstart="dragIcons(event)">DC Voltage Source -->
-<%-- 				<img class="iconImg" alt="DC Voltage Source" src="${pageContext.request.contextPath}/resistor_circuit/images/Voltage_Source.png" height="50" width="50"> --%>
-<!-- 			</span> -->
-		</div>
-	</div><!-- End of Title -->
+					</c:if>
+				</div><!-- End of Grid -->
+			</div><!-- End of Grid Title-->
+			<div id="icons"><!-- RC Icons -->
+				<!-- This division is the Icon Panel which contains all the icons the server holds. -->
+	<!-- 			<span id="dcVoltageSource" class="icons" title="DC Voltage Source" draggable="true" ondragstart="dragIcons(event)">DC Voltage Source -->
+	<%-- 				<img class="iconImg" alt="DC Voltage Source" src="${pageContext.request.contextPath}/resistor_circuit/images/Voltage_Source.png" height="50" width="50"> --%>
+	<!-- 			</span> -->
+			</div>
+		</div><!-- End of Title -->
 <%@include file="/frame/basic_frame_footer.jsp"%>
 </body>
 </html>
