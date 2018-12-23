@@ -1,6 +1,8 @@
-<!doctype html>
-<html>
-<head>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!-- <!doctype html> -->
+<!-- <html> -->
+<!-- <head> -->
 <style type="text/css">
 	#div{height: 100%;}
 	div h1{text-align: center;overflow :auto;}
@@ -124,12 +126,17 @@
 		var grids=document.getElementsByClassName('gridImg');
 		for(var i=0;i<grids.length;i++){
 			grids[i].src='${pageContext.request.contextPath}/resistor_circuit/images/0_empty.png';
-			console.log(555);
 		}
 	}
+	
+	/*Get the result of the game.*/
+	function getResult(){
+		var form1=document.getElementById('form1');
+		form1.submit();
+	}
 </script>
-</head>
-<body>
+<!-- </head> -->
+<!-- <body> -->
 <%@include file="/frame/basic_home_main.jsp"%>
 		<div id="div"><!-- Title -->
 			<h1>Resistor Circuit</h1>
@@ -137,7 +144,7 @@
 				<h5>
 					Place Your RC Circuit Below
 					<span id="submit">
-						<button>Submit</button>
+						<button onclick="getResult()">See the Result</button>
 						<button onclick="clearGrids()">Clear</button>
 					</span>
 				</h5>
@@ -164,6 +171,11 @@
 	<!-- 			</span> -->
 			</div>
 		</div><!-- End of Title -->
+		<div hidden="true"><!-- Hidden Form -->
+			<form id="form1" action="gridResult.do" method="post" enctype="application/x-www-form-urlencoded">
+				<input type="text" name="actionType" value="取得結果">
+			</form>
+		</div><!-- End of Hidden Form -->
 <%@include file="/frame/basic_frame_footer.jsp"%>
-</body>
-</html>
+<!-- </body> -->
+<!-- </html> -->
