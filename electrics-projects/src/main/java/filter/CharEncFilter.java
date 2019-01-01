@@ -10,7 +10,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 
-/*
+/**
  * This filter does all the character encoding hard work for you.
  */
 @WebFilter(urlPatterns="*.do")

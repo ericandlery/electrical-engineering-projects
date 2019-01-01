@@ -16,7 +16,30 @@
 			{fn:'ralf',ln:'schumacher'},
 			{fn:'mika',ln:'hakkinen'}
 			];
-		console.log(map.map(getMap));
+// 		console.log(map[0].fn);
+// 		var s='xyz/01_empty.jpg';
+// 		console.log(s.lastIndexOf('/'));
+// 		console.log(s.substr(s.lastIndexOf('/')+1));
+
+		var ar=[];
+		ar[5]='kimi';
+		ar[9]='ralf';
+		var jar;
+		jar=JSON.stringify(ar);
+// 		console.log(jar);
+
+		var s='445';
+		console.log(typeof s);
+		s=parseInt(s);
+// 		console.log(s+'  '+typeof s);
+
+		var m=new Map();
+		console.log(m);
+		m.set(1,'kimi');
+		m.set(2,'ralf');
+		m.set(3,'mika');
+		var a=Array.from(m);
+		console.log(JSON.stringify(a));
 	}
 	
 	function getMap(item,index){

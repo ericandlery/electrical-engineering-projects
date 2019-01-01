@@ -1,4 +1,4 @@
-package test.servlet;
+package servlet.test;
 
 import java.io.IOException;
 
@@ -8,12 +8,29 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import model.bean.rc.GridBean;
+import model.bean.test.TestBean;
+import util.bean.BeanWrapperUtils;
+
 @WebServlet(urlPatterns="/test/t.do")
-public class TestServlet extends HttpServlet{
+public class TestBeanWrapper extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		System.out.println("Kimi");
+		
+		GridBean gb=new GridBean();
+		
+		System.out.println(gb);
+		
+		gb=(GridBean)BeanWrapperUtils.wrapBeanFromReq(gb, req);
+		
+		System.out.println("gridbean="+gb);
+		
+		TestBean tb=new TestBean();
+		System.out.println(tb);
+		tb=(TestBean)BeanWrapperUtils.wrapBeanFromReq(tb, req);
+		System.out.println(tb);
+		
 	}
 
 	@Override

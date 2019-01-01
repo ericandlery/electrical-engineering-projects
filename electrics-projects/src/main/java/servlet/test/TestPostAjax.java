@@ -1,4 +1,4 @@
-package test.servlet;
+package servlet.test;
 
 import java.io.IOException;
 
@@ -8,17 +8,18 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(urlPatterns="/test/t.do")
-public class TestServlet extends HttpServlet{
+@WebServlet(urlPatterns="/testPostAjax.do")
+public class TestPostAjax extends HttpServlet{
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		System.out.println("Kimi");
+		this.doPost(req, resp);
 	}
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		this.doGet(req, resp);
+		System.out.println("ajax post");
+		System.out.println(req.getParameter("actionType"));
 	}
 
 }

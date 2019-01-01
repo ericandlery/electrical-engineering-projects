@@ -131,8 +131,40 @@
 	
 	/*Get the result of the game.*/
 	function getResult(){
+		var iconJsonStr;
 		var form1=document.getElementById('form1');
+		var formJson=document.getElementById('iconJsonStr');
+		
+		iconJsonStr=getIconsJsonStr();
+// 		console.log(iconJsonStr);
+		
+		formJson.value=iconJsonStr;
+// 		console.log(formJson.value);
 		form1.submit();
+	}
+	
+	/*Count how many icons in the grid*/
+	function getIconsJsonStr(){
+		var icons=document.getElementsByClassName('gridImg');
+		var iconSrc;
+		var iconId;
+		var iconArray=[];
+		var iconMap=new Map();
+		
+		for(var i=0;i<icons.length;i++){
+			iconSrc=icons[i].src;
+			iconId=icons[i].parentElement.id;
+// 			console.log(icons[i].src+" % "+icons[i].parentElement.id);
+// 			console.log('${pageContext.request.contextPath}');
+// 			console.log(iconSrc.substr(iconSrc.lastIndexOf('/')+1)+' '+iconId);
+			iconId=parseInt(iconId.replace('span_',''));
+			iconMap.set(iconId,iconSrc.substr(iconSrc.lastIndexOf('/')+1));
+		}
+		
+		iconArray=Array.from(iconMap);
+// 		console.log(JSON.stringify(iconArray));
+// 		console.log(typeof JSON.stringify(iconArray));
+		return JSON.stringify(iconArray);
 	}
 </script>
 <!-- </head> -->
@@ -154,7 +186,7 @@
 						<c:forEach begin="1" end="${height}" varStatus="loop"><!-- Height -->
 							<c:forEach begin="1" end="${width}" varStatus="loop"><!-- Width -->
 								<!-- Each span represents a area where an icon can be dragged into. -->
-								<span id="span(${x})" title="span(${x})" ondragover="allowDrop(event)" ondrop="getDroppable(event)">
+								<span id="span_${x}" title="span(${x})" ondragover="allowDrop(event)" ondrop="getDroppable(event)">
 									<img class="gridImg" src="${pageContext.request.contextPath}/resistor_circuit/images/0_empty.png" width="50" height="50">
 								</span>
 								<c:set var="x" value="${x+1}"/><!-- Counter -->
@@ -173,7 +205,10 @@
 		</div><!-- End of Title -->
 		<div hidden="true"><!-- Hidden Form -->
 			<form id="form1" action="gridResult.do" method="post" enctype="application/x-www-form-urlencoded">
-				<input type="text" name="actionType" value="取得結果">
+				<input type="text" name="actionType" value="calcResult">
+				<input type="number" value="${height}" name="height">
+				<input type="number" value="${width}" name="width">
+				<input id="iconJsonStr" type="text" value="" name="iconJsonStr">
 			</form>
 		</div><!-- End of Hidden Form -->
 <%@include file="/frame/basic_frame_footer.jsp"%>
