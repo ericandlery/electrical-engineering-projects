@@ -8,7 +8,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(urlPatterns="/test")
+import util.file.MyFileUtils;
+
+@WebServlet(urlPatterns="/test/t.do")
 public class TestServlet extends HttpServlet{
 
 	@Override

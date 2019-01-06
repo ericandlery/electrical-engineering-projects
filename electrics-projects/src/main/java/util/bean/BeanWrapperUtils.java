@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * Useful JavaBean Utils
+ * @author Adam31
  */
 public class BeanWrapperUtils {
 	

@@ -14,7 +14,9 @@ import javax.servlet.http.HttpServletResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import model.bean.rc.GridBean;
+import service.rc.GridResultCalcService;
 import util.bean.BeanWrapperUtils;
+import util.file.MyFileUtils;
 import util.json.JacksonUtils;
 
 @WebServlet(urlPatterns="/gridResult.do")
@@ -31,11 +33,19 @@ public class GridResultServlet extends HttpServlet{
 		String actionType=req.getParameter("actionType");
 		if("calcResult".equals(actionType)) {
 			
+			List<List<Object>> iconList=null;
 			GridBean gb=(GridBean)BeanWrapperUtils.wrapBeanFromReq(new GridBean(), req);
-			System.out.println(gb);
+			GridResultCalcService grc=new GridResultCalcService();
 			
-			System.out.println("JSON==="+JacksonUtils.jsonToList(gb.getIconJsonStr()));
+			gb.setIconNames(MyFileUtils.getFileNamesFromRequestForRC("/resistor_circuit/images", req));
 			
+//			System.out.println(gb);
+//			System.out.println(iconList);
+			
+			grc.processGridIcons(gb);
+			
+		}else {
+			throw new RuntimeException("No actions can be taken.");
 		}
 				
 	}

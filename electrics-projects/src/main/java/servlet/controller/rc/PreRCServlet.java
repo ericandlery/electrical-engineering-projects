@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(urlPatterns="/rcCircuit")
+@WebServlet(urlPatterns="/rcCircuit.do")
 public class PreRCServlet extends HttpServlet{
 
 	@Override

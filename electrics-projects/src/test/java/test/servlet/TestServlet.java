@@ -8,7 +8,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(urlPatterns="/test/t.do")
+/*Servlets don't work in test directory.*/
+//@WebServlet(urlPatterns="/test/t.do")
 public class TestServlet extends HttpServlet{
 
 	@Override

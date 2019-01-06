@@ -12,7 +12,7 @@ import model.bean.rc.GridBean;
 import model.bean.test.TestBean;
 import util.bean.BeanWrapperUtils;
 
-@WebServlet(urlPatterns="/test/t.do")
+@WebServlet(urlPatterns="/test/beant.do")
 public class TestBeanWrapper extends HttpServlet {
 
 	@Override

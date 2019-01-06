@@ -23,7 +23,7 @@
 	}
 	
 	function goToRCMain(height,width){
-		location.href='/electrics-projects/rcCircuit?height='+height+'&width='+width;
+		location.href='/electrics-projects/rcCircuit.do?height='+height+'&width='+width;
 	}
 </script>
 </head>

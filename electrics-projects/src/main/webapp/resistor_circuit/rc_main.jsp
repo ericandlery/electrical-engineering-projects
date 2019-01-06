@@ -143,7 +143,7 @@
 		form1.submit();
 	}
 	
-	/*Count how many icons in the grid*/
+	/*Count how many icons in the grid, then turn it into JSON.*/
 	function getIconsJsonStr(){
 		var icons=document.getElementsByClassName('gridImg');
 		var iconSrc;

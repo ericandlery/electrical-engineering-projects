@@ -69,5 +69,7 @@
 	<div id="div"></div>
 	<br>
 	<div id="d2">test</div>
+	<br>
+	<a href="t.do">test</a>
 </body>
 </html>

@@ -42,9 +42,7 @@ public class TestMisc {
 	
 	public Map<String,Integer> getFourWayNums(int n,int x,int y){
 		Map<String,Integer> map=new HashMap<>();
-		
-		//get 15
-		
+				
 		//up
 		Integer up=n-x;
 		if(up<1) {
