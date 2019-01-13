@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.management.RuntimeErrorException;
+
 import enums.rc.IconFunctions;
 import model.bean.rc.GridBean;
 import model.bean.rc.IconInfo;
@@ -16,6 +18,8 @@ public class GridResultCalcService {
 	 * Process and calculate the result from RC Grid.
 	 */
 	public void processGridIcons(GridBean gb) {
+		
+		int count=0;
 		
 		List<Integer> iconPositions=null;
 		Integer initPos=null;
@@ -37,22 +41,25 @@ public class GridResultCalcService {
 		IconInfo info=new IconInfo();
 //		System.out.println(gb.getIconJsonStr());
 		List<List<Object>> iconList=(List<List<Object>>) JacksonUtils.jsonToList(gb.getIconJsonStr());
-		System.out.println(iconList);
+		System.out.println("Grid Icons="+iconList);
 		
-		/*Look for a voltage source.*/
+		/*Look for a voltage source, the start point.*/
 		iconPositions=findIconPosition(iconList,IconFunctions.VOLTAGE_SOURCE);
 		if(null==iconPositions || iconPositions.size()==0) {
-			System.out.println("No voltage source to begin.");
-			throw new RuntimeException();
+//			System.out.println("No voltage source to begin.");
+			throw new RuntimeException("No voltage source to begin.");
 			// TODO User must place one voltage source.
 		}else if(iconPositions.size()>1) {
-			System.out.println("There can be only one voltage source.");
-			throw new RuntimeException();
+//			System.out.println("There can be only one voltage source.");
+			throw new RuntimeException("There can be only one voltage source.");
 			// TODO User can only place ONE voltage source.
 		}else if(iconPositions.size()==1) {
 			
 			/*Now there's a voltage source, let's continue.*/
+			
+			/*This is the start point, we'll travel through all the grid and eventually back to this point.*/
 			initPos=iconPositions.get(0);
+			
 			vsPosition=initPos;
 			System.out.println("vs="+vsPosition);
 //			System.out.println(getFourWayNums(vsPosition,gb.getWidth(),gb.getHeight()));
@@ -60,18 +67,62 @@ public class GridResultCalcService {
 			info.setPositions(iconPositions);
 			info.setCurrentPos(vsPosition);
 			info.setIcon(getIconByPos(iconList, vsPosition));
-			setIconDirections(info);
+			info=setIconDirections(info);
 			
 			System.out.println(info);
 			
+			/*This section loops the circuit.*/
 			if(info.getFrom()!=null && info.getTo()!=null) {
+				
 				/*There's a source and directions, now process to the next block.*/
+				for(int i=0;i<3;i++) {
+					
+					System.out.println("Count="+(++count));
+					
+					/*Get the four way blocks.*/
+					dirs=getFourWayNums(info.getCurrentPos(),width,height);
+					
+					System.out.println("dirs"+dirs);
+					System.out.println(dirs.get(info.getTo()));
+					System.out.println(getIconByPos(iconList, dirs.get(info.getTo())));
+					
+					/*Check if the circuit encounters a dead end.*/
+					if(existsDeadEnd(info)) {
+						throw new RuntimeException("The circuit encounters a dead end, the result cannot be processed.");
+						// TODO User must check if it's a complete circuit.
+					}
+					
+					/*Move to the next block by setting info into IconInfo.*/
+					info.setCurrentPos(dirs.get(info.getTo()));
+					info.setIcon(getIconByPos(iconList, dirs.get(info.getTo())));
+					info.setPositions(findIconPosition(iconList, info.getIcon()));
+					info.setFrom(IconDirectionsUtils.getFromByTo(info.getTo()));
+					info=IconDirectionsUtils.setIconDirections(info);
+					//// TODO TODO
+					
+					System.out.println("AFTER "+info);
+					
+					/*Loop to the next block.*/
+					
+				}
 				
-				dirs=getFourWayNums(vsPosition,width,height);
-				System.out.println("dirs"+dirs);
-				
+//				//////////////////
+//				/*There's a source and directions, now process to the next block.*/
+//				dirs=getFourWayNums(vsPosition,width,height);
+//				System.out.println("dirs"+dirs);
+//				
+//				/*? TEST SECTION, REPLACE IT WITH LOOP ?*/
+//				System.out.println(dirs.get(info.getTo()));
+//				System.out.println(getIconByPos(iconList, dirs.get(info.getTo())));
+//				info.setCurrentPos(dirs.get(info.getTo()));
+//				info.setIcon(getIconByPos(iconList, dirs.get(info.getTo())));
+//				info.setPositions(findIconPosition(iconList, info.getIcon()));
+//				info.setFrom(IconDirectionsUtils.getFromByTo(info.getTo()));
+//				
+//				System.out.println("AFTER "+info);
+//				////////////////
 			}else {
-				throw new RuntimeException("Directions unknown. Check if it has the right source.");
+				throw new RuntimeException("The source's Directions are unknown. Check if it has the right source.");
 				// TODO 
 			}
 			
@@ -160,8 +211,8 @@ public class GridResultCalcService {
 	 * Set current icon directions into info.
 	 * @param info
 	 */
-	private void setIconDirections(IconInfo info) {
-		IconDirections.setIconDirections(info);
+	private IconInfo setIconDirections(IconInfo info) {
+		return IconDirectionsUtils.setIconDirections(info);
 	}
 	
 	/**
@@ -186,6 +237,26 @@ public class GridResultCalcService {
 			n++;
 		}
 		return null;
+	}
+	
+	/**
+	 * Process to the next icon.
+	 */
+	private void processNextIcon() {
+		
+	}
+	
+	/**
+	 * Check if the circuit has a dead end.
+	 * @param info
+	 * @return
+	 */
+	private boolean existsDeadEnd(IconInfo info) {
+		if(null==info.getFrom() || null==info.getTo()) {
+			return true;
+		}else {
+			return false;
+		}
 	}
 
 }

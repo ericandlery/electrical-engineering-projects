@@ -42,6 +42,7 @@ public class GridResultServlet extends HttpServlet{
 //			System.out.println(gb);
 //			System.out.println(iconList);
 			
+			/*Calling the service to get the result.*/
 			grc.processGridIcons(gb);
 			
 		}else {
