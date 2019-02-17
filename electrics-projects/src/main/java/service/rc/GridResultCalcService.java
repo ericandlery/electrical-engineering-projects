@@ -75,8 +75,7 @@ public class GridResultCalcService {
 			if(info.getFrom()!=null && info.getTo()!=null) {
 				
 				/*There's a source and directions, now process to the next block.*/
-				for(int i=0;i<3;i++) {
-					
+				do {
 					System.out.println("Count="+(++count));
 					
 					/*Get the four way blocks.*/
@@ -102,9 +101,51 @@ public class GridResultCalcService {
 					
 					System.out.println("AFTER "+info);
 					
-					/*Loop to the next block.*/
+					/*Check if the next block is the source.*/
+					if(info.getIcon()==IconFunctions.VOLTAGE_SOURCE) {
+						System.out.println("END!!!!!!!!!!!!!!!!!");
+					}
 					
-				}
+					System.out.println("-----------");
+					/*Loop to the next block.*/
+				}while(info.getIcon()!=IconFunctions.VOLTAGE_SOURCE);
+				
+//				for(int i=0;i<9;i++) {
+//					
+//					System.out.println("Count="+(++count));
+//					
+//					/*Get the four way blocks.*/
+//					dirs=getFourWayNums(info.getCurrentPos(),width,height);
+//					
+//					System.out.println("dirs"+dirs);
+//					System.out.println(dirs.get(info.getTo()));
+//					System.out.println(getIconByPos(iconList, dirs.get(info.getTo())));
+//					
+//					/*Check if the circuit encounters a dead end.*/
+//					if(existsDeadEnd(info)) {
+//						throw new RuntimeException("The circuit encounters a dead end, the result cannot be processed.");
+//						// TODO User must check if it's a complete circuit.
+//					}
+//					
+//					/*Move to the next block by setting info into IconInfo.*/
+//					info.setCurrentPos(dirs.get(info.getTo()));
+//					info.setIcon(getIconByPos(iconList, dirs.get(info.getTo())));
+//					info.setPositions(findIconPosition(iconList, info.getIcon()));
+//					info.setFrom(IconDirectionsUtils.getFromByTo(info.getTo()));
+//					info=IconDirectionsUtils.setIconDirections(info);
+//					//// TODO TODO
+//					
+//					System.out.println("AFTER "+info);
+//					
+//					/*Check if the next block is the source.*/
+//					if(info.getIcon()==IconFunctions.VOLTAGE_SOURCE) {
+//						System.out.println("END!!!!!!!!!!!!!!!!!");
+//					}
+//					
+//					System.out.println("-----------");
+//					/*Loop to the next block.*/
+//					
+//				}
 				
 //				//////////////////
 //				/*There's a source and directions, now process to the next block.*/
@@ -252,6 +293,7 @@ public class GridResultCalcService {
 	 * @return
 	 */
 	private boolean existsDeadEnd(IconInfo info) {
+		// TODO Needs adjustments.
 		if(null==info.getFrom() || null==info.getTo()) {
 			return true;
 		}else {

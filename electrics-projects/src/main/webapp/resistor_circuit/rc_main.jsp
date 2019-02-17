@@ -31,6 +31,7 @@
 						initIconPanel(data);
 					}else{
 						alert('Icons not loaded properly.');
+						// TODO
 					}
 				}
 			}

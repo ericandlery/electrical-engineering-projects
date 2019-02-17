@@ -4,7 +4,7 @@ import enums.rc.IconFunctions;
 import model.bean.rc.IconInfo;
 
 /**
- * Use this Class to determine the direction of a icon.<br>
+ * Use this API to determine the direction of a icon.<br>
  * A temporary solution without using database.
  * @author Adam S
  */
@@ -49,14 +49,49 @@ public class IconDirectionsUtils {
 		case EMPTY:
 			break;
 		case LEFT_DOWN:
+			if(LEFT.equals(from)) {
+				info.setTo(DOWN);
+			}else if(DOWN.equals(from)) {
+				info.setTo(LEFT);
+			}else {
+				error=true;
+			}
 			break;
 		case LEFT_UP:
+			if(LEFT.equals(from)) {
+				info.setTo(UP);
+			}else if (UP.equals(from)) {
+				info.setTo(LEFT);
+			}else {
+				error=true;
+			}
 			break;
 		case STR_LINE_H:
+			if(LEFT.equals(from)) {
+				info.setTo(RIGHT);
+			}else if (RIGHT.equals(from)) {
+				info.setTo(LEFT);
+			}else {
+				error=true;
+			}
 			break;
 		case STR_LINE_V:
+			if(UP.equals(from)) {
+				info.setTo(DOWN);
+			}else if (DOWN.equals(from)) {
+				info.setTo(UP);
+			}else {
+				error=true;
+			}
 			break;
 		case UP_RIGHT:
+			if(UP.equals(from)) {
+				info.setTo(RIGHT);
+			}else if(RIGHT.equals(from)) {
+				info.setTo(UP);
+			}else {
+				error=true;
+			}
 			break;
 		case VOLTAGE_SOURCE:
 			info.setFrom(DOWN);
@@ -90,7 +125,7 @@ public class IconDirectionsUtils {
 			return "RIGHT";
 		case "RIGHT":
 			return "LEFT";
-		default:throw new RuntimeException("No correct direction String.");
+		default:throw new RuntimeException("Not a correct direction String.");
 		}
 	}
 

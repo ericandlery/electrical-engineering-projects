@@ -31,6 +31,8 @@ public class GridResultServlet extends HttpServlet{
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
 		String actionType=req.getParameter("actionType");
+		
+		/* Calculate the result from the grid. */
 		if("calcResult".equals(actionType)) {
 			
 			List<List<Object>> iconList=null;
