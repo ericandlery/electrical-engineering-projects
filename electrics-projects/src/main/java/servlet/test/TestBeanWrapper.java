@@ -22,13 +22,13 @@ public class TestBeanWrapper extends HttpServlet {
 		
 		System.out.println(gb);
 		
-		gb=(GridBean)BeanWrapperUtils.wrapBeanFromReq(gb, req);
+		gb=(GridBean)BeanWrapperUtils.wrapBeanFromReq(GridBean.class, req);
 		
 		System.out.println("gridbean="+gb);
 		
 		TestBean tb=new TestBean();
 		System.out.println(tb);
-		tb=(TestBean)BeanWrapperUtils.wrapBeanFromReq(tb, req);
+		tb=(TestBean)BeanWrapperUtils.wrapBeanFromReq(TestBean.class, req);
 		System.out.println(tb);
 		
 	}

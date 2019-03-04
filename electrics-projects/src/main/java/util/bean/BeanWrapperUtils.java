@@ -20,10 +20,10 @@ public class BeanWrapperUtils {
 	/**
 	 * This method is used to wrap all the parameters from requests into a specific JavaBean.
 	 */
-	public static Object wrapBeanFromReq(Object bean,HttpServletRequest req) {
+	public static Object wrapBeanFromReq(Class bean,HttpServletRequest req) {
 //		System.out.println("Wrapper");
 		
-		String beanName=bean.getClass().getName();
+		String beanName=bean.getName();
 		Class<?> clazz=null;
 		Iterator<String> paraNames=null;
 		String paraName=null;

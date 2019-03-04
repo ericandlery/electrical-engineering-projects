@@ -36,7 +36,7 @@ public class GridResultServlet extends HttpServlet{
 		if("calcResult".equals(actionType)) {
 			
 			List<List<Object>> iconList=null;
-			GridBean gb=(GridBean)BeanWrapperUtils.wrapBeanFromReq(new GridBean(), req);
+			GridBean gb=(GridBean)BeanWrapperUtils.wrapBeanFromReq(GridBean.class, req);
 			GridResultCalcService grc=new GridResultCalcService();
 			
 			gb.setIconNames(MyFileUtils.getFileNamesFromRequestForRC("/resistor_circuit/images", req));
