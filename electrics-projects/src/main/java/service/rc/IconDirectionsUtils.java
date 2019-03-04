@@ -47,7 +47,9 @@ public class IconDirectionsUtils {
 			}
 			break;
 		case EMPTY:
-			break;
+			// TODO Empty blocks not allowed.
+			throw new RuntimeException("You encounter a empty block!");
+//			break;
 		case LEFT_DOWN:
 			if(LEFT.equals(from)) {
 				info.setTo(DOWN);

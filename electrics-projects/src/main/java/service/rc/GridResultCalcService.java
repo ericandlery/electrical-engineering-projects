@@ -33,7 +33,7 @@ public class GridResultCalcService {
 		int height=gb.getHeight();
 		if(width<=0 || height<=0) {
 			throw new RuntimeException("Zero grid?");
-			// TODO
+			// TODO No zero grid allowed.
 		}
 		
 //		System.out.println(gb);
@@ -64,6 +64,7 @@ public class GridResultCalcService {
 			System.out.println("vs="+vsPosition);
 //			System.out.println(getFourWayNums(vsPosition,gb.getWidth(),gb.getHeight()));
 			
+			/*Set the first block info.*/
 			info.setPositions(iconPositions);
 			info.setCurrentPos(vsPosition);
 			info.setIcon(getIconByPos(iconList, vsPosition));
@@ -80,13 +81,12 @@ public class GridResultCalcService {
 					
 					/*Get the four way blocks.*/
 					dirs=getFourWayNums(info.getCurrentPos(),width,height);
-					
 					System.out.println("dirs"+dirs);
 					System.out.println(dirs.get(info.getTo()));
 					System.out.println(getIconByPos(iconList, dirs.get(info.getTo())));
 					
 					/*Check if the circuit encounters a dead end.*/
-					if(existsDeadEnd(info)) {
+					if(existsDeadEnd(info,dirs)) {
 						throw new RuntimeException("The circuit encounters a dead end, the result cannot be processed.");
 						// TODO User must check if it's a complete circuit.
 					}
@@ -101,8 +101,9 @@ public class GridResultCalcService {
 					
 					System.out.println("AFTER "+info);
 					
-					/*Check if the next block is the source.*/
-					if(info.getIcon()==IconFunctions.VOLTAGE_SOURCE) {
+					/*Check if the next block is back to the original source.*/
+					if(info.getIcon()==IconFunctions.VOLTAGE_SOURCE && info.getCurrentPos()==initPos) {
+//						System.out.println("VSPO"+info.getCurrentPos());
 						System.out.println("END!!!!!!!!!!!!!!!!!");
 					}
 					
@@ -287,14 +288,32 @@ public class GridResultCalcService {
 		
 	}
 	
+//	/**
+//	 * Deprecated
+//	 * Check if the circuit has a dead end.
+//	 * @param info
+//	 * @return
+//	 */
+//	@Deprecated
+//	private boolean existsDeadEnd(IconInfo info) {
+//		System.out.println("deadend");
+//		// TODO Needs adjustments.
+//		if(null==info.getFrom() || null==info.getTo()) {
+//			return true;
+//		}else {
+//			return false;
+//		}
+//	}
+	
 	/**
 	 * Check if the circuit has a dead end.
 	 * @param info
 	 * @return
 	 */
-	private boolean existsDeadEnd(IconInfo info) {
-		// TODO Needs adjustments.
-		if(null==info.getFrom() || null==info.getTo()) {
+	private boolean existsDeadEnd(IconInfo info,Map<String,Integer> dirs) {
+//		System.out.println("deadend");
+		String to=info.getTo();
+		if(dirs.get(to)==null) {
 			return true;
 		}else {
 			return false;

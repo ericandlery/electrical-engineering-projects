@@ -19,6 +19,9 @@ import util.bean.BeanWrapperUtils;
 import util.file.MyFileUtils;
 import util.json.JacksonUtils;
 
+/*
+ * This servlet do the calculation of the RC circuit. Not ideal though.
+ */
 @WebServlet(urlPatterns="/gridResult.do")
 public class GridResultServlet extends HttpServlet{
 
@@ -41,7 +44,7 @@ public class GridResultServlet extends HttpServlet{
 			
 			gb.setIconNames(MyFileUtils.getFileNamesFromRequestForRC("/resistor_circuit/images", req));
 			
-//			System.out.println(gb);
+			System.out.println(gb);
 //			System.out.println(iconList);
 			
 			/*Calling the service to get the result.*/

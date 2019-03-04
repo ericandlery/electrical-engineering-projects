@@ -33,7 +33,16 @@ public class BeanWrapperUtils {
 		Class<?> fieldType=null;
 		Method[] methods=null;
 		Method getter=null;
-		Method setter=null; 
+		Method setter=null;
+		Object beanObject=null;
+		
+		/*Construct a new instance for the input bean class.*/
+		try {
+			beanObject=bean.getDeclaredConstructor().newInstance();
+		} catch (ReflectiveOperationException e) {
+			e.printStackTrace();
+			throw new RuntimeException("New Instance Error.");
+		}
 		
 		/*Analyze JavaBean class.*/
 		try {
@@ -85,7 +94,7 @@ public class BeanWrapperUtils {
 						param=convertType(req.getParameter(paraName),fieldType);
 						/*Continue if the param can be converted.*/
 						if(null!=param) {
-							setter.invoke(bean,convertType(req.getParameter(paraName),fieldType));
+							setter.invoke(beanObject,convertType(req.getParameter(paraName),fieldType));
 //							System.out.println("getter="+getter.invoke(bean));
 						}else {
 							continue;
@@ -103,7 +112,7 @@ public class BeanWrapperUtils {
 			
 		}
 		
-		return bean;
+		return beanObject;
 		
 //		System.out.println("Wrapper END");
 	}
