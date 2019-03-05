@@ -130,18 +130,36 @@
 		}
 	}
 	
-	/*Get the result of the game.*/
+	/*Get the result of the game by servlet.*/
 	function getResult(){
-		var iconJsonStr;
-		var form1=document.getElementById('form1');
-		var formJson=document.getElementById('iconJsonStr');
+// 		var iconJsonStr;
+// 		var form1=document.getElementById('form1');
+// 		var formJson=document.getElementById('iconJsonStr');
 		
-		iconJsonStr=getIconsJsonStr();
-// 		console.log(iconJsonStr);
+// 		iconJsonStr=getIconsJsonStr();
+// // 		console.log(iconJsonStr);
 		
-		formJson.value=iconJsonStr;
-// 		console.log(formJson.value);
+// 		formJson.value=iconJsonStr;
+// // 		console.log(formJson.value);
+		createIconJsonStr();
 		form1.submit();
+	}
+	
+	/*Get the result of the game by Ajax.*/
+	function getResultByAjax(){
+		createIconJsonStr();
+		bindFormValues('form1');
+		
+		var xhr=new XMLHttpRequest();
+		xhr.open('POST','gridResultAjax.do',true);
+		xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded;charset=UTF-8");
+		xhr.send('test=GridResult&xxx=ooo');
+		xhr.onreadystatechange=function(){
+			if(xhr.readyState===4 && xhr.status===200){
+// 				console.log('ajax');
+// 				console.log(iconJsonStr=getIconsJsonStr());
+			}
+		}
 	}
 	
 	/*Count how many icons in the grid, then turn it into JSON.*/
@@ -167,6 +185,36 @@
 // 		console.log(typeof JSON.stringify(iconArray));
 		return JSON.stringify(iconArray);
 	}
+	
+	/* Bind all form inputs into query string for Ajax. */
+	function bindFormValues(formName){
+		var form=document.getElementById('form1');
+		var formInputs=form.children;
+		var queryStr='';
+// 		console.log('bind='+form);
+// 		console.log(form.children[3].value);
+		for(var i=0;i<formInputs.length;i++){
+// 			console.log(formInputs[i].name);
+// 			console.log(formInputs[i].value);
+// 			console.log();
+			queryStr=queryStr+formInputs[i].name+'='+formInputs[i].value;
+			if(i!=formInputs.length-1){
+				queryStr=queryStr+'&';
+			}
+		}
+		console.log('queryStr='+queryStr);
+		// TODO TODO
+	}
+	
+	/* Create the Icon Json String for the form. */
+	function createIconJsonStr(){
+		var iconJsonStr;
+		var form1=document.getElementById('form1');
+		var formJson=document.getElementById('iconJsonStr');
+		
+		iconJsonStr=getIconsJsonStr();		
+		formJson.value=iconJsonStr;
+	}
 </script>
 <!-- </head> -->
 <!-- <body> -->
@@ -177,7 +225,8 @@
 				<h5>
 					Place Your RC Circuit Below
 					<span id="submit">
-						<button onclick="getResult()">See the Result</button>
+<!-- 						<button onclick="getResult()">See the Result</button> -->
+						<button onclick="getResultByAjax()">See the Result</button>
 						<button onclick="clearGrids()">Clear</button>
 					</span>
 				</h5>
@@ -204,7 +253,7 @@
 	<!-- 			</span> -->
 			</div>
 		</div><!-- End of Title -->
-		<div hidden="true"><!-- Hidden Form -->
+		<div hidden="true"><!-- Hidden Form of the Grid -->
 			<form id="form1" action="gridResult.do" method="post" enctype="application/x-www-form-urlencoded">
 				<input type="text" name="actionType" value="calcResult">
 				<input type="number" value="${height}" name="height">
