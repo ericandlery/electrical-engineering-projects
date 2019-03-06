@@ -105,10 +105,16 @@ public class GridResultCalcService {
 					if(info.getIcon()==IconFunctions.VOLTAGE_SOURCE && info.getCurrentPos()==initPos) {
 //						System.out.println("VSPO"+info.getCurrentPos());
 						System.out.println("END!!!!!!!!!!!!!!!!!");
+						
+						/*If yes, then proceed to next step.*/
+						// TODO
+						System.out.println("It's a short circuit!");
+						
 					}
 					
 					System.out.println("-----------");
-					/*Loop to the next block.*/
+					
+					/*Loop to the next block if the current block is not the original source.*/
 				}while(info.getIcon()!=IconFunctions.VOLTAGE_SOURCE);
 				
 //				for(int i=0;i<9;i++) {

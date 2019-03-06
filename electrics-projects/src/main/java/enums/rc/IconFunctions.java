@@ -12,7 +12,9 @@ public enum IconFunctions {
 	LEFT_DOWN("04_left_down.png"),
 	LEFT_UP("05_left_up.png"),
 	UP_RIGHT("06_up_right.png"),
-	VOLTAGE_SOURCE("10_Voltage_Source.png")
+	VOLTAGE_SOURCE("10_Voltage_Source.png"),
+	RESISTOR_H("11_Resistor_h.png"),
+	RESISTOR_V("12_Resistor_v.png")
 	;
 	
 	private String icon;

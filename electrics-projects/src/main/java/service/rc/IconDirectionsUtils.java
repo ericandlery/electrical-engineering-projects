@@ -99,6 +99,24 @@ public class IconDirectionsUtils {
 			info.setFrom(DOWN);
 			info.setTo(UP);
 			break;
+		case RESISTOR_H:
+			if(LEFT.equals(from)) {
+				info.setTo(RIGHT);
+			}else if(RIGHT.equals(from)) {
+				info.setTo(LEFT);
+			}else {
+				error=true;
+			}
+			break;
+		case RESISTOR_V:
+			if(UP.equals(from)) {
+				info.setTo(DOWN);
+			}else if(DOWN.equals(from)) {
+				info.setTo(UP);
+			}else {
+				error=true;
+			}
+			break;
 		default:
 			error=true;
 			break;

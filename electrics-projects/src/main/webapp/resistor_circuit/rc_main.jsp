@@ -15,8 +15,13 @@
 	.icons{border: 5px solid black;border-radius: 5px;display: inline-block;margin: 5px;}
 </style>
 <script type="text/javascript">
-	window.onload=function(){		
-		/*Get icon list to set the icon panel*/
+
+	/*This variable stores all special blocks.*/
+	var specialBlockArrays=new Array();
+
+	window.onload=function(){
+		
+		/*Get icon list to set the icon panel.*/
 		var xhr=new XMLHttpRequest();
 		xhr.open('POST','iconAjax.do',true);
 		xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded;charset=UTF-8");
@@ -33,6 +38,29 @@
 						alert('Icons not loaded properly.');
 						// TODO
 					}
+				}
+			}
+		}
+		
+		/*Get special block list and set it into the variable.*/
+		var xhr2=new XMLHttpRequest();
+		xhr2.open('POST','specialBlocksAjax.do',true);
+		xhr2.setRequestHeader("Content-type","application/x-www-form-urlencoded;charset=UTF-8");
+		xhr2.send('actionType=getSpecialBlocks');
+		xhr2.onreadystatechange=function(){
+			if(xhr2.readyState===4 && xhr2.status===200){
+// 				console.log(xhr2);
+// 				console.log(xhr2.getResponseHeader('Content-Type'));
+				var type2=xhr2.getResponseHeader('Content-Type')
+				if(type2.indexOf('application/json')===0){
+					var data2=JSON.parse(xhr2.response);
+					for(var i=0;i<data2.length;i++){
+						specialBlockArrays[i]=data2[i];
+					}
+// 					console.log(specialBlockArrays);
+				}else{
+					alert('Load Error On Special Blocks ');
+					// TODO
 				}
 			}
 		}
@@ -225,8 +253,8 @@
 				<h5>
 					Place Your RC Circuit Below
 					<span id="submit">
-<!-- 						<button onclick="getResult()">See the Result</button> -->
-						<button onclick="getResultByAjax()">See the Result</button>
+						<button onclick="getResult()">See the Result</button>
+<!-- 						<button onclick="getResultByAjax()">See the Result</button> -->
 						<button onclick="clearGrids()">Clear</button>
 					</span>
 				</h5>
