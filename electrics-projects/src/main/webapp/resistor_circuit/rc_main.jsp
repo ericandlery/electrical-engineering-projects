@@ -18,6 +18,7 @@
 
 	/*This variable stores all special blocks.*/
 	var specialBlockArrays=new Array();
+	var isResistor=false;
 
 	window.onload=function(){
 		
@@ -55,7 +56,7 @@
 				if(type2.indexOf('application/json')===0){
 					var data2=JSON.parse(xhr2.response);
 					for(var i=0;i<data2.length;i++){
-						specialBlockArrays[i]=data2[i];
+						specialBlockArrays[i]=data2[i].replace('.png','Pic');
 					}
 // 					console.log(specialBlockArrays);
 				}else{
@@ -69,7 +70,7 @@
 
 	/*Icon dragging event*/
 	function dragIcons(e){
-		var iconId
+		var iconId;
 		
 		/*Only the span's id is needed. Could be improved......*/
 		iconId=dragDropFilter('IMG',e,iconId);
@@ -89,21 +90,85 @@
 		var iconId;
 		var srcIconId=e.dataTransfer.getData('iconId');
 		var srcImgUrl;
+		var type;
+		var targetBlock;
+		
+// 		console.log('srcIconId='+srcIconId);
+// 		console.log('isSpecialBlock='+specialBlockArrays.includes(srcIconId));
+		
+		/*Check if the dropped block is a special block, if yes, then proceed to it's functionality.*/
+		type=checkIsSpecialBlock(srcIconId);
+// 		console.log('type='+type);
 		
 		/*Only the span's id is needed. Could be improved......*/
 		iconId=dragDropFilter('IMG',e,iconId);
 		
-		console.log(srcIconId);
 		srcImgUrl=document.getElementById(srcIconId).getElementsByTagName('IMG')[0].src;
 // 		console.log(srcImgUrl);
 		
+		targetBlock=document.getElementById(iconId);
 // 		document.getElementById(iconId).innerHTML='<img class="gridImg" src="'+srcImgUrl+'" height="50" width="50">';
-		document.getElementById(iconId).firstElementChild.src=srcImgUrl;
+		targetBlock.firstElementChild.src=srcImgUrl;
 // 		e.target.innerHTML='<img src="/electrics-projects/resistor_circuit/images/Voltage_Source.png" height="50" width="50">';
+// 		console.log(iconId);
+// 		console.log(document.getElementById(iconId));
+		
+		/*Add special function to the block according to the type.*/
+		addSpecialFunction(type,targetBlock);
+	}
+	
+	/*Check if the dropped block is a special block, if yes, then proceed to it's functionality.*/
+	function checkIsSpecialBlock(srcIconId){
+		var type;
+		
+		if(specialBlockArrays.includes(srcIconId)){
+// 			console.log('specail Block!!!');
+			
+			switch(srcIconId){
+				/*Resistor*/
+				case '11_Resistor_hPic':
+				case '12_Resistor_vPic':
+// 					console.log('RESISTOR!!!!');
+					var desc=document.getElementById('desc');
+// 					console.log('desc='+desc);
+					if(!isResistor){
+						desc.insertAdjacentHTML('afterend','<span style="color: red;">Double click the resistor to set the resistance.</span>');
+						isResistor=true;
+					}
+					type='resistor';
+					break;
+				/*Exception*/
+				default:
+					console.log('Exception!');
+			}
+		}else{
+// 			console.log('non-special,return');
+		}
+		return type;
+	}
+	
+	/*Add special function to special blocks.*/
+	function addSpecialFunction(type,targetBlock){
+// 		console.log('tttype='+type);
+// 		console.log('tttypeblock=');
+// 		console.log(targetBlock);
+		
+		if('resistor'===type){
+			console.log(targetBlock);
+			targetBlock.addEventListener('dblclick',configResistor);
+			console.log(targetBlock);
+		}else{
+			// Do Nothing
+		}
+	}
+	
+	function configResistor(){
+		// TODO check the icon property
+		console.log('RRR');
 	}
 	
 	function changeIcon(){
-		
+		// TODO
 	}
 	
 	/*Use this to get the oustside ID. Could be improved......*/
@@ -117,7 +182,7 @@
 		return iconId;
 	}
 	
-	/*Initialize the icon panel*/
+	/*Initialize the icon panel when the page is being loaded.*/
 	function initIconPanel(data){
 		var length=data.length;
 		var frag=document.createDocumentFragment();
@@ -251,7 +316,7 @@
 			<h1>Resistor Circuit</h1>
 			<div id="outerGrid"><!-- Grid Tile-->
 				<h5>
-					Place Your RC Circuit Below
+					<span id="desc">Place Your RC Circuit Below. </span>
 					<span id="submit">
 						<button onclick="getResult()">See the Result</button>
 <!-- 						<button onclick="getResultByAjax()">See the Result</button> -->

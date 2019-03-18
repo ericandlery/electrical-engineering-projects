@@ -30,9 +30,10 @@ public class SpecialBlocksAjax extends HttpServlet{
 		if("getSpecialBlocks".equals(actionType)) {
 			List<String> specialBlocks=new ArrayList<>();
 			
+			/*Here, we set special blocks.*/
 			specialBlocks.add(IconFunctions.RESISTOR_H.getIcon());
 			specialBlocks.add(IconFunctions.RESISTOR_V.getIcon());
-			System.out.println(specialBlocks);
+			System.out.println("specialBlocks"+specialBlocks);
 			
 			resp.setContentType("application/json");
 			PrintWriter out=resp.getWriter();
