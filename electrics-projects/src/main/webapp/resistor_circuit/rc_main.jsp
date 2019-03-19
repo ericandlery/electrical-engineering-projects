@@ -143,20 +143,26 @@
 			}
 		}else{
 // 			console.log('non-special,return');
+			type='standard';
 		}
 		return type;
 	}
 	
 	/*Add special function to special blocks.*/
 	function addSpecialFunction(type,targetBlock){
-// 		console.log('tttype='+type);
+		console.log('tttype='+type);
 // 		console.log('tttypeblock=');
-// 		console.log(targetBlock);
+		console.log(targetBlock);
 		
 		if('resistor'===type){
-			console.log(targetBlock);
-			targetBlock.addEventListener('dblclick',configResistor);
-			console.log(targetBlock);
+			/*Double click this block to setup resistance.*/
+// 			targetBlock.addEventListener('dblclick',function(){
+// 				configResistor();
+// 			});
+			targetBlock.setAttribute('ondblclick','configResistor()');
+		}else if('standard'===type){
+			/*Standard components do nothing.*/
+			targetBlock.removeAttribute('ondblclick');
 		}else{
 			// Do Nothing
 		}
@@ -219,7 +225,10 @@
 	function clearGrids(){
 		var grids=document.getElementsByClassName('gridImg');
 		for(var i=0;i<grids.length;i++){
+// 			console.log(grids[i].parentNode);
 			grids[i].src='${pageContext.request.contextPath}/resistor_circuit/images/0_empty.png';
+			/*Remove all special functionalities.*/
+			grids[i].parentNode.removeAttribute('ondblclick');
 		}
 	}
 	
